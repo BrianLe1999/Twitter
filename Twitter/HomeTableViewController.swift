@@ -23,9 +23,15 @@ class HomeTableViewController: UITableViewController {
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.loadTweets()
+    }
 
     @objc func loadTweets() {
         
+        print("load tweets")
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         let myParams = ["count": numberOfTweet]
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: { (tweets: [NSDictionary]) in
@@ -68,7 +74,9 @@ class HomeTableViewController: UITableViewController {
         
         let imageUrl = URL(string: ((user["profile_image_url_https"]) as? String)!)
         cell.profileImageView.af_setImage(withURL: imageUrl!)
-        
+        cell.setFavorite(tweet["favorited"] as! Bool)
+        cell.tweetId = tweet["id"] as! Int
+        cell.setRetweeted(tweet["retweeted"] as! Bool)
         return cell
     }
     
