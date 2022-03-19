@@ -18,10 +18,11 @@ class HomeTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        numberOfTweet = 20
+        numberOfTweet = 10
         loadTweets()
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
+        print("tweets = ", self.tweetArray)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +49,7 @@ class HomeTableViewController: UITableViewController {
     }
     
     func loadMoreTweets(){
-        numberOfTweet = numberOfTweet + 20
+        numberOfTweet = numberOfTweet + 10
         loadTweets()
     }
     
@@ -77,6 +78,10 @@ class HomeTableViewController: UITableViewController {
         cell.setFavorite(tweet["favorited"] as! Bool)
         cell.tweetId = tweet["id"] as! Int
         cell.setRetweeted(tweet["retweeted"] as! Bool)
+        let entity = tweet["entities"] as? NSDictionary
+       //  print("entities = ", entity)
+        let meida = entity!["media"]
+        print(meida)
         return cell
     }
     
